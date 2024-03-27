@@ -23,17 +23,15 @@ function getAllCategoriesBySlug(PDO $db): array|string
 function getClippedNewsByCat(PDO $db, $catSlug): array|string {
     $cleanedSlug = htmlspecialchars(strip_tags(trim($catSlug)), ENT_QUOTES);
 
-    $sql = "SELECT SUBSTRING(n.content, 1, 25), n.slug, n.title, n.date_published, c.title
+    $sql = "SELECT SUBSTRING(n.content, 1, 25) AS bob, n.slug, n.title, n.date_published, c.title, u.thename
             FROM news n
             JOIN news_has_category h ON h.news_idnews = n.idnews
             JOIN category c ON c.idcategory = h.category_idcategory
+            JOIN user u ON u.iduser = n.user_iduser
             WHERE c.slug = '$catSlug'  /* une heure perdu pour réaliser que $catSlug doit être en '' */
             ";
     try{
         $query = $db->query($sql);
-
-
-
         $result = $query->fetchAll();
         $query->closeCursor();
         return $result;
