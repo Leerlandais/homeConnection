@@ -30,7 +30,9 @@ try {
 // chargement des catégories pour le menu
 $menuSlug = getAllCategoriesBySlug($db);
 
-// var_dump($menuSlug);
+if (isset($_GET["showCat"])) {
+    $catSlug = getClippedNewsByCat($db, $_GET["showCat"]);
+}
 
 /*
 Appel de la vue
