@@ -20,10 +20,10 @@ function getAllCategoriesBySlug(PDO $db): array|string
 }
 
 
-function getClippedNewsByCat(PDO $db, $catSlug) {
+function getClippedNewsByCat(PDO $db, $catSlug): array|string {
     $cleanedSlug = htmlspecialchars(strip_tags(trim($catSlug)), ENT_QUOTES);
-   var_dump($cleanedSlug);
-    $sql = "SELECT SUBSTRING(n.content, 1, 25), n.slug, n.title, n.date_published
+
+    $sql = "SELECT SUBSTRING(n.content, 1, 25), n.slug, n.title, n.date_published, c.title
             FROM news n
             JOIN news_has_category h ON h.news_idnews = n.idnews
             JOIN category c ON c.idcategory = h.category_idcategory
@@ -32,9 +32,7 @@ function getClippedNewsByCat(PDO $db, $catSlug) {
     try{
         $query = $db->query($sql);
 
-        if($query->rowCount()==0){
-            return "Pas encore d'article";
-        }
+
 
         $result = $query->fetchAll();
         $query->closeCursor();
