@@ -22,14 +22,21 @@ function getAllCategoriesBySlug(PDO $db): array|string
 
 function getClippedNewsByCat(PDO $db, $catSlug): array|string {
     $cleanedSlug = htmlspecialchars(strip_tags(trim($catSlug)), ENT_QUOTES);
-
-    $sql = "SELECT SUBSTRING(n.content, 1, 25) AS bob, n.slug, n.title, n.date_published, c.title, u.thename
+if ($cleanedSlug == "nouser") {
+    $sql = "SELECT SUBSTRING(content, 1, 100) AS con, slug, title, date_published
+            FROM news 
+            WHERE user_iduser IS NULL
+    ";
+ 
+}else {
+    $sql = "SELECT SUBSTRING(n.content, 1, 100) AS con, n.slug, n.title, n.date_published, c.title, u.thename
             FROM news n
             JOIN news_has_category h ON h.news_idnews = n.idnews
-            JOIN category c ON c.idcategory = h.category_idcategory
-            JOIN user u ON u.iduser = n.user_iduser
-            WHERE c.slug = '$catSlug'  /* une heure perdu pour réaliser que $catSlug doit être en '' */
+            LEFT JOIN category c ON c.idcategory = h.category_idcategory
+            JOIN user u ON u.iduser = n.user_iduser 
+            WHERE c.slug = '$cleanedSlug'  /* une heure perdu pour réaliser que $catSlug doit être en '' */
             ";
+}
     try{
         $query = $db->query($sql);
         $result = $query->fetchAll();
@@ -43,17 +50,4 @@ function getClippedNewsByCat(PDO $db, $catSlug): array|string {
 
 }
 
-function addArtist (PDO $db, string $art) {
-    $cleanedArtist = htmlspecialchars(strip_tags(trim($art)), ENT_QUOTES);
-    $sql = "INSERT INTO `tab_artist` (`art_name`) VALUES (:artName)";
-    $stmt = $db->prepare($sql);
-    $stmt->bindParam(':artName', $cleanedArtist);
-    try {
-        $stmt->execute();
-        $db->commit();
-        return true;
-    } catch (PDOException $e) {
-        error_log("Error adding Artist: " . $e->getMessage());
-        return false;
-}
-}
+
