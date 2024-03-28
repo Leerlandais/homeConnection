@@ -34,7 +34,7 @@ if ($cleanedSlug == "nouser") {
             JOIN news_has_category h ON h.news_idnews = n.idnews
             LEFT JOIN category c ON c.idcategory = h.category_idcategory
             JOIN user u ON u.iduser = n.user_iduser 
-            WHERE c.slug = '$cleanedSlug'  /* une heure perdu pour réaliser que $catSlug doit être en '' */
+            WHERE c.slug = '$cleanedSlug'  /* une heure perdu pour réaliser que $cleanedSlug doit être en '' */
             ";
 }
     try{
