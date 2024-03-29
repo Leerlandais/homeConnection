@@ -27,17 +27,7 @@ if ($cleanedSlug == "nouser") {
             FROM news 
             WHERE user_iduser IS NULL
     ";
- 
-}else {
-    $sql = "SELECT SUBSTRING(n.content, 1, 120) AS con, n.slug, n.title AS ntit, n.date_published, c.title, u.thename
-            FROM news n
-            JOIN news_has_category h ON h.news_idnews = n.idnews
-            LEFT JOIN category c ON c.idcategory = h.category_idcategory
-            JOIN user u ON u.iduser = n.user_iduser 
-            WHERE c.slug = '$cleanedSlug'  /* une heure perdu pour réaliser que $cleanedSlug doit être en '' */
-            ";
-}
-    try{
+     try{
         $query = $db->query($sql);
         $result = $query->fetchAll();
         $query->closeCursor();
@@ -46,8 +36,25 @@ if ($cleanedSlug == "nouser") {
     }catch(Exception $e){
         return $e->getMessage();
     }
-    
-
+}else {
+    $sql = "SELECT SUBSTRING(n.content, 1, 120) AS con, n.slug, n.title AS ntit, n.date_published, c.title, u.thename, u.login
+            FROM news n
+            LEFT JOIN news_has_category h ON h.news_idnews = n.idnews
+            LEFT JOIN category c ON c.idcategory = h.category_idcategory
+            LEFT JOIN user u ON u.iduser = n.user_iduser 
+            WHERE c.slug = ?  
+            ";
 }
 
+try{
+    $query = $db->prepare($sql);
+    $query->bindValue(1,$cleanedSlug);
+    $query->execute();
+    $results = $query->fetchAll();
+    $query->closeCursor();
+    return $results;
+}catch(Exception $e){
+    return $e->getMessage();
+}
 
+}
