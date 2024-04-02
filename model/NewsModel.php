@@ -6,7 +6,7 @@ function getArticle (PDO $db, $artSlug) {
   
     $cleanedSlug = htmlspecialchars(strip_tags(trim($artSlug)), ENT_QUOTES);
 
-    $sql = "SELECT n.content, n.title, n.date_published, u.thename
+    $sql = "SELECT n.content, n.title, n.date_published, u.thename, u.login
             FROM news n
             LEFT JOIN user u ON u.iduser = n.user_iduser
             WHERE n.slug = '$cleanedSlug'  

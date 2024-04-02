@@ -9,7 +9,10 @@
                     foreach($artSlug as $as) :?>
                     <div class="post-preview">
                         
-                            <h2 class="post-title"><?=$as["title"]?> par <?php if (isset($as["thename"])) {echo $as["thename"];}else{echo "unknown";}?></h2>
+                            <h2 class="post-title"><?=$as["title"]?> par <?php if (isset($as["thename"])) {
+                                ?><a href="?showAut=<?=$as["login"]?>"><?=$as["thename"];?></a>
+                                <?php
+                                }else{echo "unknown";}?></h2>
                             <p class="post-meta"><?=$as["content"]?><p>
                        
                         <p class="post-meta">
