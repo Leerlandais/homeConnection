@@ -31,6 +31,7 @@ try {
 
 // chargement des catégories pour le menu
 $menuSlug = getAllCategoriesBySlug($db);
+$allArts = getArticlesByAuthor($db);
 
 if (isset($_GET["showCat"])) {
     $catSlug = getClippedNewsByCat($db, $_GET["showCat"]);

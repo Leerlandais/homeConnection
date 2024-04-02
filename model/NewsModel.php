@@ -21,3 +21,23 @@ function getArticle (PDO $db, $artSlug) {
         return $e->getMessage();
     }
     }
+
+
+    function getArticlesByAuthor(PDO $db) {
+        $sql = "SELECT DISTINCT u.thename, u.iduser, n.title, n.date_published, n.user_iduser
+        FROM user u
+        LEFT JOIN news n ON u.iduser = n.user_iduser
+      
+
+        ";
+            try{
+                $query = $db->query($sql);
+                $result = $query->fetchAll();
+                $query->closeCursor();
+                return $result;
+        
+            }catch(Exception $e){
+                return $e->getMessage();
+            }
+    }
+

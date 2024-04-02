@@ -5,12 +5,21 @@
                 <div class="site-heading">
                     <h1>Homepage</h1>
                     <?php 
+ 
                         if (!isset($_GET["showCat"]) && (!isset($_GET["showArt"]))) {
+                            foreach ($allArts as $arts) :
+
                             ?>
-                    <span class="subheading">Petit exercice</span>
-                    <p>Dans model/NewsModel.php, créez une fonction qui va charger toutes les News publiéeavec le titre, la date de publication, les 250 premiers caractères de l'article (spossible ne pas couper dans les mots ), thename de l'auteur par ordre de publicatiodécroissante. rajouter les catégories si possible (même liens que dans le menu)</p>
-                    <p>affichez ces articles à la place des faux articles ci-dessous</p>
-                       <?php } ?>
+                                <span class="subheading"><?=$arts["thename"]?></span>
+                            <?php if ($arts["user_iduser"] == NULL) { ?>
+                                    <p>N'as pas encore crée un article</p>
+                                    <?php
+                            }else { ?>
+                                <p><?=$arts["title"]?></p>
+                       <?php 
+                    }
+                    endforeach;
+                    } ?>
                         
                        
                     
